@@ -1,19 +1,39 @@
 # activex-js-helpers
-More flexible ActiveX-specific tasks in Javascript
-
-Manipulating ActiveX objects from Javascript (under WSH or an HTA) works for the most part transparently:
-
-```
-var dict = new ActiveXObject('Scripting.Dictionary');
-//add items
-window.alert(dict.Items().Count());
-```
-However, there are some pain points, specficially ActiveX event handling, and property setters with parameters.
-
-## Event handling
+Sane event handler management for ActiveX objects in Javascript
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx); however, they all rely on:
-* the function must be a **[function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#Defining_functions)**, not a function expression
-* the function must be **in the global namespace**
+* both the function, and the variable pointing to the object must be **in the global namespace**
+* the variable must be initialized before the function declaration is evaluated. This is harder than it seems, because of [function declaration hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#Function_declaration_hoisting); and must rely either on:
+   * some form of string->code evaluation -- `eval`, `setTimeout`, `window.execScript`, `new Function` -- or
+   * containing the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block
 * the function must have a **special name** -- depending on the environment and event handling mechanism, either `variable.eventName`, `variable::eventName`, or `variable_eventName`
-* the variable must be initialized before the function declaration is evaluated. This is harder than it seems, because of [function declaration hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#Function_declaration_hoisting)
+* the function must be a **[function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#Defining_functions)**, not a function expression
+* the parameters of the function must match those defined in the ActiveX event
+
+```
+var wdApp = new ActiveXObject('Word.Application');
+
+eval('function wdApp::Quit() {window.alert(\'Application quit\');}');
+```
+
+This library enables the following:
+```
+(function() {
+  //not in the global namespace
+  var wdApp = new ActiveXObject('Word.Application');
+  
+  //using a function expression, without a special name
+  ActiveXObject.on(wdApp, 'Quit', function() {
+    window.alert('Application quit');
+    
+    //`this` binding
+    window.alert(this.Version);
+  });
+
+  //AFAIK there is no way to determine the event's parameters at runtime, so they must be passed in
+  ActiveXObject.on(wdApp, 'DocumentBeforeSave', ['Doc','SaveAsUI','Cancel'], function (params) {
+    //changes to the `params` object are propagated back to the internal handler
+    params.SaveAsUI = false;
+    params.Cancel = !window.confirm("Do you really want to save?");   
+  });
+})();
