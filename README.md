@@ -1,4 +1,4 @@
-# activex-js-helpers
+# activex-js-events
 Sane event handler management for ActiveX objects in Javascript
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx); however, they all rely on:
