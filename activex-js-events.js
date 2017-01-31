@@ -1,6 +1,6 @@
 (function () {
     var scripts = document.getElementsByTagName('script');
-    var path = scripts[scripts.length - 1].src.split(/[\/\\]/).slice(0,-1).join('\\') + '/event source.html';
+    var path = scripts[scripts.length - 1].src.split(/[\/\\]/).slice(0,-1).join('\\') + '/event-handler-container.html';
     var iframe = document.createElement('iframe');
     iframe.src = path;
     document.appendChild(iframe);
