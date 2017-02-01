@@ -7,7 +7,7 @@ There are a [number of mechanisms for handling ActiveX events](https://msdn.micr
    * containing the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block (either in another `SCRIPT` block, or by setting the `id` of a previous element)
 * the function must have a special name -- depending on the environment and event handling mechanism, either `variable.eventName`, `variable::eventName`, or `variable_eventName`
 * the function must be a [function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#Defining_functions), not a function expression
-* the parameters of the function must match those defined in the ActiveX event
+* the parameters of the function must exactly match those defined in the ActiveX event
 
 ```
 var wdApp = new ActiveXObject('Word.Application');
