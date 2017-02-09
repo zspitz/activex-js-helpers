@@ -22,7 +22,7 @@ This library enables the following:
   var wdApp = new ActiveXObject('Word.Application');
   
   //using a function expression, without a special name
-  ActiveXObject.on(wdApp, 'Quit', function() {
+  ActiveXObject.on(wdApp, 'Quit', [], function() {
     window.alert('Application quit');
     
     //`this` binding
