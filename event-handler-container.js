@@ -71,6 +71,11 @@ var register = function (obj, eventName, parameterNames, handler) {
         handlers[objectIndex] = {};
     }
     if (!handlers[objectIndex][eventName]) {
+        if (!parameterNames.length) {
+            //parameterNames is an optional argument
+            handler = parameterNames;
+            parameterNames = [];
+        }
         var arr = Array.prototype.slice.apply(parameterNames); //because the original array might not have the polyfills
         var def = [
             'function obj' + objectIndex + '::' + eventName + '(' + parameterNames.join(', ') + ') {',
