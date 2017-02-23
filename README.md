@@ -1,4 +1,4 @@
-# activex-js-events
+# activex-js-helpers
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all rely on:
 * both a) the variable pointing to the event source, and b) the event handler, must be in the global namespace
