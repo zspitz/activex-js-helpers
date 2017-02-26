@@ -1,4 +1,4 @@
-# activex-js-helpers
+# Event handling of ActiveX objects
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all rely on:
 * both a) the variable pointing to the event source, and b) the event handler, must be in the global namespace
@@ -36,3 +36,18 @@ This library enables the following:
     params.Cancel = !window.confirm("Do you really want to save?");   
   });
 })();
+
+# Property setter
+
+Property getters and setters without parameters are represented as simple properties. However, while getters with paraneters are represented as methods, setters with parameters are represented as assignment to methods.
+```
+var dict = new ActiveXObject('Scripting.Dictionary');
+
+//setter with parameters
+dict.Item('a') = 1;
+```
+This is non-standard Javascript.
+The library enables calling setters with parameters in a standard Javascript-compliant fashion:
+```
+ActiveXObject.set(dict, 'Item', ['a'], 1);
+```
