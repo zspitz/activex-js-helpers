@@ -39,15 +39,14 @@ This library enables the following:
 ```
 # Property setter
 
-Property getters and setters without parameters are represented as simple properties. However, while getters with paraneters are represented as methods, setters with parameters are represented as assignment to methods.
+Property getters and setters without parameters are represented as Javascript simple read/write properties. However, while getters with paraneters are represented as methods, setters with parameters are represented as assignment to methods.
 ```
 var dict = new ActiveXObject('Scripting.Dictionary');
 
 //setter with parameters
 dict.Item('a') = 1;
 ```
-This is non-standard Javascript.
-The library enables calling setters with parameters in a standard Javascript-compliant fashion:
+This is non-standard Javascript. The library enables calling setters with parameters in a standard Javascript-compliant fashion:
 ```
 ActiveXObject.set(dict, 'Item', ['a'], 1);
 ```
