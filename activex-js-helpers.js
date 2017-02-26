@@ -13,4 +13,13 @@
         if (!iframe.src) return;
         iframe.contentWindow.unregister(obj, eventName, handler);
     };
+
+    ActiveXObject.set = function(obj, propertyName, parameters, newValue) {
+        var parameterString = '';
+        for (var i=0; i< parameters.length; i+=1) {
+            parameterString += 'parameters[' + i + '],';
+        }
+        parameterString = parameterString.substr(0, parameterString.length-1); //removes trailing comme
+        eval('obj.' + propertyName + '(' + parameterString + ') = newValue');
+    };
 })();
