@@ -27,7 +27,7 @@ This library enables the following:
     window.alert(this.Version);
   });
 
-  //handler is a function expression, with all the parameters wrapped into a single object
+  //all the parameters wrapped into a single `params` object
   //AFAIK there is no way to determine the event's parameters at runtime, so they must be passed in
   ActiveXObject.on(wdApp, 'DocumentBeforeSave', ['Doc','SaveAsUI','Cancel'], function (params) {
     //changes to the `params` object are propagated back to the internal handler
