@@ -17,7 +17,6 @@ eval('function wdApp::Quit() {window.alert(\'Application quit\');}');
 This library enables the following:
 ```
 (function() {
-  //not in the global namespace
   var wdApp = new ActiveXObject('Word.Application');
   
   //using a function expression, without a special name
