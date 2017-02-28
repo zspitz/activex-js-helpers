@@ -169,6 +169,10 @@
         }
     };
 
+    ActiveXObject.hasRegisteredObjects = function() {
+        return registeredObjects.length;
+    };
+
     ActiveXObject.set = function (obj, propertyName, parameters, newValue) {
         var parameterString = '';
         for (var i = 0; i < parameters.length; i += 1) {
