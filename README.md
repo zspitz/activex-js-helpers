@@ -1,9 +1,10 @@
 # Event handler management
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all require that:
-* the variable must be initialized before the function declaration is evaluated. This is harder than it seems, because of [function declaration hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#Function_declaration_hoisting); and must rely either on:
-   * some form of string->code evaluation -- `eval`, `setTimeout`, `window.execScript`, `new Function` -- or
-   * containing the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block (either in another `SCRIPT` block, or by setting the `id` of a previous element); this also implies that the `id`/variable must be available to the global scope.
+* the variable must be initialized before the function declaration is evaluated. This is harder than it seems, because of [function declaration hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#Function_declaration_hoisting); and requires doing one of the following:
+   * wrap the function declaration within an IIFE (this works because function declarations are only hoisted to the function scope),
+   * some form of string-to-code evaluation -- `eval`, `setTimeout`, `window.execScript`, `new Function`, or
+   * wrap the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block (either in another `SCRIPT` block, or by setting the `id` of a previous element); this also implies that the `id`/variable must be available to the global scope.
 * the function must have a special name -- depending on the environment and event handling mechanism, either `variable.eventName`, `variable::eventName`, or `variable_eventName`
 * the function must be a [function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#Defining_functions), not a function expression
 * the parameters of the function must exactly match those defined in the ActiveX event
@@ -11,7 +12,15 @@ There are a [number of mechanisms for handling ActiveX events](https://msdn.micr
 ```
 var wdApp = new ActiveXObject('Word.Application');
 
+//using eval
 eval('function wdApp::Quit() {window.alert(\'Application quit\');}');
+
+//using an IIFE
+(function() {
+  function wdApp::Quit() {
+    window.alert('Application quit');
+  }
+})();
 ```
 
 This library enables the following:
@@ -20,15 +29,16 @@ This library enables the following:
   var wdApp = new ActiveXObject('Word.Application');
   
   //using a function expression, without a special name
-  ActiveXObject.on(wdApp, 'Quit', [], function() {
+  ActiveXObject.on(wdApp, 'Quit', function() {
     window.alert('Application quit');
     
     //`this` binding
     window.alert(this.Version);
   });
 
-  //all the parameters wrapped into a single `params` object
-  //AFAIK there is no way to determine the event's parameters at runtime, so they must be passed in
+  //when the event is defined as passing parameters, the parameters are wrapped into a single object
+  //the object is passed into the final event handler
+  //AFAIK there is no way to determine the parameters at runtime, so the names must be passed in at registration
   ActiveXObject.on(wdApp, 'DocumentBeforeSave', ['Doc','SaveAsUI','Cancel'], function (params) {
     //changes to the `params` object are propagated back to the internal handler
     params.SaveAsUI = false;
