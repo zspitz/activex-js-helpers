@@ -1,10 +1,9 @@
-# Event handling of ActiveX objects
+# Event handler management
 
-There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all rely on:
-* both a) the variable pointing to the event source, and b) the event handler, must be in the global namespace
+There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all require that:
 * the variable must be initialized before the function declaration is evaluated. This is harder than it seems, because of [function declaration hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#Function_declaration_hoisting); and must rely either on:
    * some form of string->code evaluation -- `eval`, `setTimeout`, `window.execScript`, `new Function` -- or
-   * containing the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block (either in another `SCRIPT` block, or by setting the `id` of a previous element)
+   * containing the function within a `SCRIPT` block, while the initialization happens before the `SCRIPT` block (either in another `SCRIPT` block, or by setting the `id` of a previous element); this also implies that the `id`/variable must be available to the global scope.
 * the function must have a special name -- depending on the environment and event handling mechanism, either `variable.eventName`, `variable::eventName`, or `variable_eventName`
 * the function must be a [function declaration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions#Defining_functions), not a function expression
 * the parameters of the function must exactly match those defined in the ActiveX event
@@ -18,7 +17,6 @@ eval('function wdApp::Quit() {window.alert(\'Application quit\');}');
 This library enables the following:
 ```
 (function() {
-  //not in the global namespace
   var wdApp = new ActiveXObject('Word.Application');
   
   //using a function expression, without a special name
@@ -29,6 +27,7 @@ This library enables the following:
     window.alert(this.Version);
   });
 
+  //all the parameters wrapped into a single `params` object
   //AFAIK there is no way to determine the event's parameters at runtime, so they must be passed in
   ActiveXObject.on(wdApp, 'DocumentBeforeSave', ['Doc','SaveAsUI','Cancel'], function (params) {
     //changes to the `params` object are propagated back to the internal handler
