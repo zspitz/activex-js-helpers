@@ -117,10 +117,9 @@
         if (objectIndex == -1) {
             registeredObjects.push(obj);
             objectIndex = registeredObjects.length - 1;
-            this['obj' + objectIndex] = obj;
             handlers[objectIndex] = {};
         }
-        if (handlers[objectIndex][eventName] === undefined) { //it might be an empty array
+        if (handlers[objectIndex][eventName] === undefined) { //explicit check against undefined, because it might be an empty array
             var def = "function obj::" + eventName + " (" + parameterNames.join(', ') + ") {" +
                 "var params = { " +
                 parameterNames.map(function (x) {
@@ -150,7 +149,7 @@
         var objectIndex = registeredObjects.indexOf(obj);
         var handlersObject = handlers[objectIndex];
         if (!eventName) {
-            Object.keys(handlersObject).forEach(function(x) {
+            Object.keys(handlersObject).forEach(function (x) {
                 ActiveXObject.off(obj, x);
             });
             registeredObjects[objectIndex] = undefined;
@@ -163,22 +162,20 @@
         }
 
         var handlerIndex = handlersObject[eventName].indexOf(handler);
-        while (handlerIndex>-1) {
+        while (handlerIndex > -1) {
             handlersObject[eventName][handlerIndex] = undefined;
             handlerIndex = handlersObject[eventName].indexOf(handler);
         }
     };
 
-    ActiveXObject.hasRegisteredObjects = function() {
+    ActiveXObject.hasRegisteredObjects = function () {
         return registeredObjects.length;
     };
 
     ActiveXObject.set = function (obj, propertyName, parameters, newValue) {
-        var parameterString = '';
-        for (var i = 0; i < parameters.length; i += 1) {
-            parameterString += 'parameters[' + i + '],';
-        }
-        parameterString = parameterString.substr(0, parameterString.length - 1); //removes trailing comme
+        var parameterString = parameters.map(function (x, index) {
+            return 'parameters[' + index + ']';
+        }).join(', ');
         eval('obj.' + propertyName + '(' + parameterString + ') = newValue');
     };
 })();
