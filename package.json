@@ -19,5 +19,6 @@
   "bugs": {
     "url": "https://github.com/zspitz/activex-js-helpers/issues"
   },
-  "homepage": "https://github.com/zspitz/activex-js-helpers#readme"
+  "homepage": "https://github.com/zspitz/activex-js-helpers#readme",
+  "types": "activex-js-helpers.d.ts"
 }
