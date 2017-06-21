@@ -1,0 +1,23 @@
+{
+  "name": "activex-helpers",
+  "version": "1.0.0",
+  "description": "Event handler management, and parameterized property setters, for ActiveX objects",
+  "main": "activex-js-helpers.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zspitz/activex-js-helpers.git"
+  },
+  "keywords": [
+    "activex",
+    "events"
+  ],
+  "author": "Zev Spitz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zspitz/activex-js-helpers/issues"
+  },
+  "homepage": "https://github.com/zspitz/activex-js-helpers#readme"
+}
