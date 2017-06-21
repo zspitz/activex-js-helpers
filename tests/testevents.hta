@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <script src="../shims.js"></script>
+    <script src="./firebug/firebug-lite-modified.js"></script>
+    <script src="jquery-1.12.4.js"></script>
+    <script src="..\activex-js-helpers.js"></script>
+    <script>
+        $(function () {
+            $('#btnWord').click(function () {
+                var wdApp = new ActiveXObject('Word.Application');
+                wdApp.Visible = true;
+
+                ActiveXObject.on(wdApp, 'Quit', [], function () {
+                    window.alert(this.Version);
+                });
+                ActiveXObject.on(wdApp, 'Quit', function () {
+                    window.alert('Second quit');
+                });
+            });
+
+            $('#btnExcel').click(function () {
+                var xlApp = new ActiveXObject('Excel.Application');
+                xlApp.Visible = true;
+
+                ActiveXObject.on(xlApp, 'WorkbookAfterSave', ['Wb', 'Success'], function (params) {
+                    window.alert('You saved the workbook');
+                });
+            });
+
+            $('#btnPropertySetter').click(function () {
+                var dict = new ActiveXObject('Scripting.Dictionary');
+                ActiveXObject.set(dict, 'Item', ['b'], 'Beirut');
+                console.log(dict.Item('b'));
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <p>
+        Press the 'Start Word' button to start an instance of a Word application, and register a handler to the Quit event.<br>
+        Close the Word application to see the Quit event handler in action.<br>
+        <input type="button" value="Start Word" id="btnWord" />
+    </p>
+    <p>
+        Press the 'Start Excel' button to start an Excel Application instance, and register a handler to the WorkbookAfterSave event.<br>
+        Save the Excel workbook to see the WorkbookAfterSave event handler<br>
+        Note: Quitting Excel from the UI will not release it from memory; you have to kill it using Task Manager.<br>
+        <input type="button" value="Start Excel" id="btnExcel" />        
+    </p>
+    <p>
+        Press F12 to see the Firebug Lite console, and the results of <code>ActiveXObject.set</code><br>
+        <input type="button" value="Test property setter" id="btnPropertySetter" />
+    </p>
+</body>
+
+</html>
