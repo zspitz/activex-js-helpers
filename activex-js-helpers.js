@@ -4,11 +4,9 @@
 
     var trigger = function (objectIndex, eventName, params) {
         var obj = registeredObjects[objectIndex];
-        var objectHandlers = handlers[objectIndex][eventName];
-        var i;
-        for (i = 0; i < objectHandlers.length; i++) {
-            objectHandlers[i].call(obj, params);
-        }
+        handlers[objectIndex][eventName].forEach(function(x) {
+            x.call(obj, params);
+        });
     };
 
     ActiveXObject.on = function (obj, eventName, parameterNames, handler) {
