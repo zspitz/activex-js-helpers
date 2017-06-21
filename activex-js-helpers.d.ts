@@ -4,7 +4,7 @@ interface ActiveXObject {
 
     /** Register an event handler with the passed-in object, for the specified event; 
      * specifying the parameters on the object passed into the handler */
-    on<T>(obj: T, eventName: string, handler: (this: T, parameterNames: string[], parameter: any) => void): void;
+    on<T, K extends string = never>(obj: T, eventName: string, handler: (this: T, parameterNames: K[], parameter: Record<K, any>) => void): void;
 
     /** Unregister all handlers, all handlers on a specific object, all handlers for a specific object's events, or a specific handler */
     off(obj?: any, eventName?: string, handler?: Function): void;
