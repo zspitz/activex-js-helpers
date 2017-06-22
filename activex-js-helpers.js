@@ -4,7 +4,7 @@
 
     var trigger = function (objectIndex, eventName, params) {
         var obj = registeredObjects[objectIndex];
-        handlers[objectIndex][eventName].forEach(function(x) {
+        handlers[objectIndex][eventName].forEach(function (x) {
             x.call(obj, params);
         });
     };
@@ -72,7 +72,7 @@
     };
 
     ActiveXObject.hasRegisteredObjects = function () {
-        return registeredObjects.length;
+        return registeredObjects.length > 0;
     };
 
     ActiveXObject.set = function (obj, propertyName, parameters, newValue) {
