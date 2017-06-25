@@ -1,3 +1,5 @@
+Also available via [npm](https://www.npmjs.com/package/activex-helpers).
+
 # Event handler management
 
 There are a [number of mechanisms for handling ActiveX events](https://msdn.microsoft.com/en-us/library/ms974564.aspx) in Javascript; however, they all require that:
