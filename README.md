@@ -63,4 +63,4 @@ ActiveXObject.set(dict, 'Item', ['a'], 1);
 ```
 # Usage
 
-This library uses on a number of ES5 array methods. The necessary shims are available in `shims.js`, in the absence of another shim library.
+This library relies on a number of ES5 array methods. The necessary shims are available in `shims.js`, in the absence of another shim library.
