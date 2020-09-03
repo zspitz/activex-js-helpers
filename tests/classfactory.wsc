@@ -2,7 +2,7 @@
 <component>
 	<?component error="true" debug="false"?>
 	<registration
-		description="AciteX JS Helpers Test Class Factory"
+		description="ActiveX JS Helpers Test Class Factory"
 		progid="ActiveXJSHelpers.TestClassFactory"
 		version="1.00"
 		classid="{a44dc85b-e1ed-4b34-9b50-a03a270618f0}"

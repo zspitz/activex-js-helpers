@@ -1,6 +1,6 @@
 {
   "name": "activex-helpers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Event handler management, and parameterized property setters, for ActiveX objects",
   "main": "activex-js-helpers.js",
   "directories": {
